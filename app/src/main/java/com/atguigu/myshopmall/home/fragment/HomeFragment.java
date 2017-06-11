@@ -9,10 +9,14 @@ import android.widget.Toast;
 
 import com.atguigu.myshopmall.R;
 import com.atguigu.myshopmall.base.BaseFragment;
+import com.atguigu.myshopmall.util.Constants;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 /**
  * Created by Administrator on 2017/6/11.
@@ -43,14 +47,33 @@ public class HomeFragment extends BaseFragment {
     public void initData() {
         super.initData();
 //        Log.e("TAG","HomeFragment--initData");
+
+        //联网请求
+        getDataFromNet();
     }
 
+    private void getDataFromNet() {
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.reset(this);
+        String url = Constants.HOME_URL;
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e("TAG","联网失败");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("TAG","联网成功==" + response);
+
+                    }
+                });
     }
+
 
     @OnClick({R.id.tv_scan_home, R.id.tv_search_home, R.id.tv_message_home, R.id.ib_top})
     public void onViewClicked(View view) {
@@ -68,5 +91,11 @@ public class HomeFragment extends BaseFragment {
                 Toast.makeText(context, "回到顶部", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
     }
 }
