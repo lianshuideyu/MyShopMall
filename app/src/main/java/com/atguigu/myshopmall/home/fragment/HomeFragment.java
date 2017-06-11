@@ -1,14 +1,17 @@
 package com.atguigu.myshopmall.home.fragment;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.atguigu.myshopmall.R;
 import com.atguigu.myshopmall.base.BaseFragment;
+import com.atguigu.myshopmall.home.bean.HomeBean;
 import com.atguigu.myshopmall.util.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -69,9 +72,21 @@ public class HomeFragment extends BaseFragment {
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e("TAG","联网成功==" + response);
+                        //解析数据
+                        processData(response);
 
                     }
                 });
+    }
+
+    private void processData(String json) {
+        if(!TextUtils.isEmpty(json)) {
+            HomeBean resultBeanData  = JSON.parseObject(json, HomeBean.class);
+            HomeBean.ResultBean resultBean = resultBeanData.getResult();
+            Log.e("TAG","resultBean..=="+resultBean.getAct_info().get(0).getName());
+        }
+
+
     }
 
 
