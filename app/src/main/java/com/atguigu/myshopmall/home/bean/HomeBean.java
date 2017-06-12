@@ -3,10 +3,11 @@ package com.atguigu.myshopmall.home.bean;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/6/11.
+ * Created by Administrator on 2017/6/12.
  */
 
 public class HomeBean {
+
 
     /**
      * code : 200

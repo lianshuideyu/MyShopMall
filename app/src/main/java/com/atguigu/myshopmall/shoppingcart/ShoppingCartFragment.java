@@ -1,4 +1,4 @@
-package com.atguigu.myshopmall.home.fragment;
+package com.atguigu.myshopmall.shoppingcart;
 
 import android.graphics.Color;
 import android.util.Log;
@@ -15,7 +15,7 @@ public class ShoppingCartFragment extends BaseFragment {
     private TextView tv;
     @Override
     public View initView() {
-        tv = new TextView(context);
+        tv = new TextView(mContext);
         tv.setTextColor(Color.RED);
         tv.setTextSize(30);
         Log.e("TAG","ShoppingCartFragment--initView");

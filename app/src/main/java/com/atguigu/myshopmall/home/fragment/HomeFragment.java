@@ -1,7 +1,7 @@
 package com.atguigu.myshopmall.home.fragment;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.atguigu.myshopmall.R;
 import com.atguigu.myshopmall.base.BaseFragment;
+import com.atguigu.myshopmall.home.adapter.HomeAdapter;
 import com.atguigu.myshopmall.home.bean.HomeBean;
 import com.atguigu.myshopmall.util.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -26,7 +27,7 @@ import okhttp3.Call;
  */
 
 public class HomeFragment extends BaseFragment {
-
+    private static final String TAG = HomeFragment.class.getSimpleName();//"HomeFragment"
     @InjectView(R.id.tv_scan_home)
     TextView tvScanHome;
     @InjectView(R.id.tv_search_home)
@@ -38,10 +39,13 @@ public class HomeFragment extends BaseFragment {
     @InjectView(R.id.ib_top)
     ImageButton ibTop;
 
+    private String homeUrl;
+
+    private HomeAdapter adapter;
     @Override
     public View initView() {
         Log.e("TAG", "HomeFragment--initView");
-        View view = View.inflate(context, R.layout.fragment_home, null);
+        View view = View.inflate(mContext, R.layout.fragment_home, null);
         ButterKnife.inject(this, view);
         return view;
     }
@@ -57,10 +61,10 @@ public class HomeFragment extends BaseFragment {
 
     private void getDataFromNet() {
 
-        String url = Constants.HOME_URL;
+        homeUrl = Constants.HOME_URL;
         OkHttpUtils
                 .get()
-                .url(url)
+                .url(homeUrl)
                 .build()
                 .execute(new StringCallback() {
 
@@ -80,11 +84,16 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void processData(String json) {
-        if(!TextUtils.isEmpty(json)) {
-            HomeBean resultBeanData  = JSON.parseObject(json, HomeBean.class);
-            HomeBean.ResultBean resultBean = resultBeanData.getResult();
-            Log.e("TAG","resultBean..=="+resultBean.getAct_info().get(0).getName());
-        }
+
+        HomeBean homeBean = JSON.parseObject(json, HomeBean.class);
+
+        Log.e(TAG, "解析成功==" + homeBean.getResult().getAct_info().get(0).getName());
+
+        adapter = new HomeAdapter(mContext,homeBean.getResult());
+
+        LinearLayoutManager manager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false);
+        rvHome.setLayoutManager(manager);
+        rvHome.setAdapter(adapter);
 
 
     }
@@ -94,16 +103,16 @@ public class HomeFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_scan_home:
-                Toast.makeText(context, "扫一扫", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "扫一扫", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.tv_search_home:
-                Toast.makeText(context, "搜索", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "搜索", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.tv_message_home:
-                Toast.makeText(context, "消息", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "消息", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.ib_top:
-                Toast.makeText(context, "回到顶部", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "回到顶部", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

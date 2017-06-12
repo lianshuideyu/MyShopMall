@@ -15,13 +15,13 @@ import android.view.ViewGroup;
 public abstract class BaseFragment extends Fragment {
 
 
-    public Context context;
+    public Context mContext;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.context = getContext();
+        this.mContext = getContext();
     }
 
     @Nullable

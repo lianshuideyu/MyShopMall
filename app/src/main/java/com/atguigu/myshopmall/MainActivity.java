@@ -7,11 +7,11 @@ import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 
 import com.atguigu.myshopmall.base.BaseFragment;
-import com.atguigu.myshopmall.home.fragment.CommunityFragment;
+import com.atguigu.myshopmall.community.CommunityFragment;
 import com.atguigu.myshopmall.home.fragment.HomeFragment;
-import com.atguigu.myshopmall.home.fragment.ShoppingCartFragment;
-import com.atguigu.myshopmall.home.fragment.TypeFragment;
-import com.atguigu.myshopmall.home.fragment.UserFragemnt;
+import com.atguigu.myshopmall.shoppingcart.ShoppingCartFragment;
+import com.atguigu.myshopmall.type.TypeFragment;
+import com.atguigu.myshopmall.user.UserFragemnt;
 
 import java.util.ArrayList;
 
