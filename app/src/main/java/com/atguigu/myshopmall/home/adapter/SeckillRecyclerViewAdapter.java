@@ -87,6 +87,9 @@ public class SeckillRecyclerViewAdapter extends RecyclerView.Adapter<SeckillRecy
         }
     }
 
+    /**
+     * 利用接口写点击事件
+     */
     public interface OnItemClickListener {
         public void setOnItemClick(int positon);
     }

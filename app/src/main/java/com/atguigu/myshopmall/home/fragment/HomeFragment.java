@@ -1,6 +1,6 @@
 package com.atguigu.myshopmall.home.fragment;
 
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -91,8 +91,22 @@ public class HomeFragment extends BaseFragment {
 
         adapter = new HomeAdapter(mContext,homeBean.getResult());
 
-        LinearLayoutManager manager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false);
+        GridLayoutManager manager = new GridLayoutManager(mContext,1);
         rvHome.setLayoutManager(manager);
+
+        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if(position <= 3) {
+                    ibTop.setVisibility(View.GONE);
+                }else {
+                    ibTop.setVisibility(View.VISIBLE);
+                }
+
+                return 1;
+            }
+        });
+
         rvHome.setAdapter(adapter);
 
 
@@ -112,7 +126,8 @@ public class HomeFragment extends BaseFragment {
                 Toast.makeText(mContext, "消息", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.ib_top:
-                Toast.makeText(mContext, "回到顶部", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "回到顶部", Toast.LENGTH_SHORT).show();
+                rvHome.scrollToPosition(0);
                 break;
         }
     }
