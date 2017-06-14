@@ -40,6 +40,9 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         this.cbAll = checkbox_delete_all;
         //显示总价格
         showTotalPrice();
+
+        //检查是否全部勾选
+        checkAll();
     }
 
     private void showTotalPrice() {
@@ -119,8 +122,46 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
 
                     //点击勾选按键时重新刷新价格
                     showTotalPrice();
+
+                    //判断是否全部勾选
+                    checkAll();
                 }
             });
         }
+    }
+
+    /**
+     * 判断是否全部选中
+     */
+    private void checkAll(){
+        if(datas != null && datas.size() > 0) {
+            //有数据
+            int number = 0;
+            for(int i = 0; i < datas.size(); i++) {
+                GoodsBean goodsBean = datas.get(i);
+                if(!goodsBean.isChecked()) {
+                    //如果存在没有勾选的数据
+                    checkboxAll.setChecked(false);
+                    cbAll.setChecked(false);
+                    break;//跳出循环
+                }else {
+                    number++;
+                }
+
+            }
+
+            if(number == datas.size()) {
+                checkboxAll.setChecked(true);
+                cbAll.setChecked(true);
+            }
+
+        }else {//没有数据
+            //设置勾选取消
+            checkboxAll.setChecked(false);
+            cbAll.setChecked(false);
+
+        }
+
+
     }
 }
