@@ -45,17 +45,17 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         checkAll();
     }
 
-    private void showTotalPrice() {
+    public void showTotalPrice() {
         tvShopcartTotal.setText("合计：" + getTotalPrice());
     }
 
     private double getTotalPrice() {
         double result = 0;
-        if(datas != null && datas.size() > 0) {
-            for(int i = 0; i < datas.size(); i++) {
+        if (datas != null && datas.size() > 0) {
+            for (int i = 0; i < datas.size(); i++) {
                 GoodsBean goodsBean = datas.get(i);
                 //判断是否勾选
-                if(goodsBean.isChecked()) {
+                if (goodsBean.isChecked()) {
                     result += goodsBean.getNumber() * Double.parseDouble(goodsBean.getCover_price());
                 }
 
@@ -77,10 +77,10 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         //2.绑定数据
         holder.cbGov.setChecked(goodsBean.isChecked());
         //图片
-        Glide.with(mContext).load(Constants.BASE_URL_IMAGE+goodsBean.getFigure()).into(holder.ivGov);
+        Glide.with(mContext).load(Constants.BASE_URL_IMAGE + goodsBean.getFigure()).into(holder.ivGov);
         holder.tvDescGov.setText(goodsBean.getName());
         //设置价格
-        holder.tvPriceGov.setText("￥"+goodsBean.getCover_price());
+        holder.tvPriceGov.setText("￥" + goodsBean.getCover_price());
         holder.AddSubView.setValue(goodsBean.getNumber());
 
         holder.AddSubView.setMinValue(1);
@@ -92,6 +92,24 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
     @Override
     public int getItemCount() {
         return datas == null ? 0 : datas.size();
+    }
+
+    /**
+     * 设置是否选择
+     *
+     * @param checked
+     */
+    public void checkAll_none(boolean checked) {
+        if (datas != null && datas.size() > 0) {
+
+            for (int i = 0; i < datas.size(); i++) {
+                GoodsBean goodsBean = datas.get(i);
+                goodsBean.setChecked(checked);
+                notifyItemChanged(i);
+            }
+        }else {
+            checkboxAll.setChecked(false);
+        }
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
@@ -108,7 +126,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this,itemView);
+            ButterKnife.inject(this, itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -133,29 +151,29 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
     /**
      * 判断是否全部选中
      */
-    private void checkAll(){
-        if(datas != null && datas.size() > 0) {
+    private void checkAll() {
+        if (datas != null && datas.size() > 0) {
             //有数据
             int number = 0;
-            for(int i = 0; i < datas.size(); i++) {
+            for (int i = 0; i < datas.size(); i++) {
                 GoodsBean goodsBean = datas.get(i);
-                if(!goodsBean.isChecked()) {
+                if (!goodsBean.isChecked()) {
                     //如果存在没有勾选的数据
                     checkboxAll.setChecked(false);
                     cbAll.setChecked(false);
                     break;//跳出循环
-                }else {
+                } else {
                     number++;
                 }
 
             }
 
-            if(number == datas.size()) {
+            if (number == datas.size()) {
                 checkboxAll.setChecked(true);
                 cbAll.setChecked(true);
             }
 
-        }else {//没有数据
+        } else {//没有数据
             //设置勾选取消
             checkboxAll.setChecked(false);
             cbAll.setChecked(false);
