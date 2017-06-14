@@ -2,7 +2,7 @@ package com.atguigu.myshopmall.home.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,8 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atguigu.myshopmall.R;
+import com.atguigu.myshopmall.home.activity.GoodsInfoActivity;
 import com.atguigu.myshopmall.home.activity.WebViewActivity;
+import com.atguigu.myshopmall.home.bean.GoodsBean;
 import com.atguigu.myshopmall.home.bean.HomeBean;
+import com.atguigu.myshopmall.home.bean.WebViewBean;
 import com.atguigu.myshopmall.home.util.GlideImageLoader;
 import com.atguigu.myshopmall.home.view.MyGridView;
 import com.atguigu.myshopmall.util.Constants;
@@ -75,6 +78,9 @@ public class HomeAdapter extends RecyclerView.Adapter {
     public int currentType = BANNER;
 
     private LayoutInflater inflater;
+
+    public static final String GOODS_BEAN = "goods_bean";
+    public static final String WEBVIEW_BEAN = "webview_bean";
 
     public HomeAdapter(Context mContext, HomeBean.ResultBean resultBean) {
         this.mContext = mContext;
@@ -170,7 +176,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             banner = (Banner) itemView.findViewById(R.id.banner);
         }
 
-        public void setData(List<HomeBean.ResultBean.BannerInfoBean> banner_info) {
+        public void setData(final List<HomeBean.ResultBean.BannerInfoBean> banner_info) {
             List<String> images = new ArrayList<>();
             for (int i = 0; i < banner_info.size(); i++) {
                 images.add(Constants.BASE_URL_IMAGE + banner_info.get(i).getImage());
@@ -183,7 +189,36 @@ public class HomeAdapter extends RecyclerView.Adapter {
                         @Override
                         public void OnBannerClick(int position) {
 
-                            Toast.makeText(mContext, "position==" + position, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(mContext, "position==" + position, Toast.LENGTH_SHORT).show();
+
+                            if(position < banner_info.size()){
+                                String product_id = "";
+                                String name = "";
+                                String cover_price = "";
+                                if (position == 0) {
+                                    product_id = "627";
+                                    cover_price = "32.00";
+                                    name = "剑三T恤批发";
+                                } else if (position == 1) {
+                                    product_id = "21";
+                                    cover_price = "8.00";
+                                    name = "同人原创】剑网3 剑侠情缘叁 Q版成男 口袋胸针";
+                                } else {
+                                    product_id = "1341";
+                                    cover_price = "50.00";
+                                    name = "【蓝诺】《天下吾双》 剑网3同人本";
+                                }
+                                String image = banner_info.get(position).getImage();
+                                GoodsBean goodsBean = new GoodsBean();
+                                goodsBean.setName(name);
+                                goodsBean.setCover_price(cover_price);
+                                goodsBean.setFigure(image);
+                                goodsBean.setProduct_id(product_id);
+
+                                Intent intent = new Intent(mContext, GoodsInfoActivity.class);
+                                intent.putExtra(GOODS_BEAN, goodsBean);
+                                mContext.startActivity(intent);
+                            }
                         }
                     })
                     .start();
@@ -243,8 +278,13 @@ public class HomeAdapter extends RecyclerView.Adapter {
                     HomeBean.ResultBean.ActInfoBean actInfoBean = act_info.get(position);
                     Toast.makeText(mContext, "" + actInfoBean.getName(), Toast.LENGTH_SHORT).show();
 
+                    WebViewBean webViewBean = new WebViewBean();
+                    webViewBean.setName(actInfoBean.getName());
+                    webViewBean.setIcon_url(actInfoBean.getIcon_url());
+                    webViewBean.setUrl(Constants.BASE_URL_IMAGE+actInfoBean.getUrl());
+
                     Intent intent = new Intent(mContext, WebViewActivity.class);
-                    intent.setData(Uri.parse(Constants.BASE_URL_IMAGE + actInfoBean.getUrl()));
+                    intent.putExtra(WEBVIEW_BEAN,webViewBean);
                     mContext.startActivity(intent);
                 }
             });
@@ -253,6 +293,10 @@ public class HomeAdapter extends RecyclerView.Adapter {
         }
     }
 
+    /**
+     * 是否为第一次倒计时
+     */
+    private boolean isFirst = false;
     private class SeckillViewHolder extends RecyclerView.ViewHolder {
         private TextView tvMore;
         private RecyclerView recyclerView;
@@ -260,7 +304,9 @@ public class HomeAdapter extends RecyclerView.Adapter {
         private CountdownView countdownView;
 
         private long dt;
+        private HomeBean.ResultBean.SeckillInfoBean seckillinfo;
 
+        private Handler handler = new Handler();
         public SeckillViewHolder(Context mContext, View itemView) {
             super(itemView);
             tvMore = (TextView) itemView.findViewById(R.id.tv_more_seckill);
@@ -281,7 +327,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             tvMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(mContext, "加载更多", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, "加载更多", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -289,17 +335,56 @@ public class HomeAdapter extends RecyclerView.Adapter {
             adapter.setOnItemClickListener(new SeckillRecyclerViewAdapter.OnItemClickListener() {
                 @Override
                 public void setOnItemClick(int positon) {
-                    HomeBean.ResultBean.SeckillInfoBean.ListBean listBean = seckill_info.getList().get(positon);
-                    Toast.makeText(mContext, "" + listBean.getName(), Toast.LENGTH_SHORT).show();
+                    HomeBean.ResultBean.SeckillInfoBean.ListBean infoBean = seckill_info.getList().get(positon);
+                    //Toast.makeText(mContext, "" + infoBean.getName(), Toast.LENGTH_SHORT).show();
+                    GoodsBean goodsBean = new GoodsBean();
+                    goodsBean.setName(infoBean.getName());
+                    goodsBean.setCover_price(infoBean.getCover_price());
+                    goodsBean.setFigure(infoBean.getFigure());
+                    goodsBean.setProduct_id(infoBean.getProduct_id());
+                    Intent intent = new Intent(mContext, GoodsInfoActivity.class);
+                    intent.putExtra(GOODS_BEAN,goodsBean);
+                    mContext.startActivity(intent);
                 }
             });
 
 
             //设置时间
             //秒杀倒计时 -毫秒
-            dt = Integer.valueOf(seckill_info.getEnd_time()) - Integer.valueOf(seckill_info.getStart_time());
-            countdownView.start(dt);
+            /*dt = Integer.valueOf(seckill_info.getEnd_time()) - Integer.valueOf(seckill_info.getStart_time());
+            countdownView.start(dt);*/
+            this.seckillinfo = seckill_info;
+            if(!isFirst) {//第一次进来
+                isFirst = true;
+
+                long totalTime = Long.parseLong(seckill_info.getEnd_time()) - Long.parseLong(seckill_info.getStart_time());
+                long currentTime = System.currentTimeMillis();
+                //同步时间
+                seckillinfo.setEnd_time(currentTime + totalTime + "");
+                //开始刷新时间
+                freshTime();
+            }
+
         }
+
+        private void freshTime(){
+            handler.postDelayed(myRunnable,10);
+        }
+
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                long currentTime = System.currentTimeMillis();
+                if(currentTime > Long.parseLong(seckillinfo.getEnd_time())) {
+                    handler.removeCallbacksAndMessages(null);
+                }else {
+                    countdownView.updateShow(Long.parseLong(seckillinfo.getEnd_time()) - currentTime);
+                    handler.postDelayed(myRunnable,1000);
+
+                }
+
+            }
+        };
     }
 
     private class RecommendViewHolder extends RecyclerView.ViewHolder {
@@ -332,7 +417,19 @@ public class HomeAdapter extends RecyclerView.Adapter {
             gvRecommend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    Toast.makeText(mContext, "" + recommend_info.get(position).getName(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, "" + recommend_info.get(position).getName(), Toast.LENGTH_SHORT).show();
+
+                    HomeBean.ResultBean.RecommendInfoBean infoBean = recommend_info.get(position);
+
+                    //传递数据
+                    GoodsBean goodsBean = new GoodsBean();
+                    goodsBean.setName(infoBean.getName());
+                    goodsBean.setCover_price(infoBean.getCover_price());
+                    goodsBean.setFigure(infoBean.getFigure());
+                    goodsBean.setProduct_id(infoBean.getProduct_id());
+                    Intent intent = new Intent(mContext, GoodsInfoActivity.class);
+                    intent.putExtra(GOODS_BEAN,goodsBean);
+                    mContext.startActivity(intent);
                 }
             });
         }
@@ -365,7 +462,19 @@ public class HomeAdapter extends RecyclerView.Adapter {
             gv_hot.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    Toast.makeText(mContext, "" + hot_info.get(position).getName(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, "" + hot_info.get(position).getName(), Toast.LENGTH_SHORT).show();
+                    HomeBean.ResultBean.HotInfoBean data = hot_info.get(position);
+                    Toast.makeText(mContext, "" + data.getName(), Toast.LENGTH_SHORT).show();
+
+                    String cover_price = data.getCover_price();
+                    String name = data.getName();
+                    String figure = data.getFigure();
+                    String product_id = data.getProduct_id();
+                    GoodsBean goodsBean = new GoodsBean(cover_price, figure,name, product_id);
+
+                    Intent intent = new Intent(mContext, GoodsInfoActivity.class);
+                    intent.putExtra(GOODS_BEAN,goodsBean);
+                    mContext.startActivity(intent);
                 }
             });
         }

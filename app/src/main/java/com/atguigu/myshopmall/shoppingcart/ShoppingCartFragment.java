@@ -5,7 +5,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.atguigu.myshopmall.app.MyApplication;
 import com.atguigu.myshopmall.base.BaseFragment;
+import com.atguigu.myshopmall.home.bean.GoodsBean;
+import com.atguigu.myshopmall.shoppingcart.utils.CartStorage;
+
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2017/6/11.
@@ -24,8 +29,13 @@ public class ShoppingCartFragment extends BaseFragment {
 
     @Override
     public void initData() {
+        super.initData();
         tv.setText("购物车");
 
-        super.initData();
+        ArrayList<GoodsBean> allData = CartStorage.getInstance(MyApplication.getContext()).getAllData();
+        for(int i = 0; i < allData.size(); i++) {
+
+            Log.e("TAG",""+allData.get(i).toString());
+        }
     }
 }
