@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.atguigu.myshopmall.R;
 import com.atguigu.myshopmall.app.MyApplication;
 import com.atguigu.myshopmall.home.bean.GoodsBean;
+import com.atguigu.myshopmall.shoppingcart.utils.AddSubView;
 import com.atguigu.myshopmall.shoppingcart.utils.CartStorage;
 import com.atguigu.myshopmall.util.Constants;
 import com.bumptech.glide.Glide;
@@ -84,11 +85,11 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         holder.tvDescGov.setText(goodsBean.getName());
         //设置价格
         holder.tvPriceGov.setText("￥" + goodsBean.getCover_price());
-        holder.AddSubView.setValue(goodsBean.getNumber());
+        holder.addSubView.setValue(goodsBean.getNumber());
 
-        holder.AddSubView.setMinValue(1);
+        holder.addSubView.setMinValue(1);
         //设置库存
-        holder.AddSubView.setMaxValue(20);
+        holder.addSubView.setMaxValue(20);
 
     }
 
@@ -131,7 +132,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         @InjectView(R.id.tv_price_gov)
         TextView tvPriceGov;
         @InjectView(R.id.AddSubView)
-        com.atguigu.myshopmall.shoppingcart.utils.AddSubView AddSubView;
+        com.atguigu.myshopmall.shoppingcart.utils.AddSubView addSubView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -152,6 +153,23 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
 
                     //判断是否全部勾选
                     checkAll();
+                }
+            });
+
+            /**
+             * 购物车单条数据的加减改变总价并保存数据
+             */
+            addSubView.setOnNumberChangeListener(new AddSubView.OnNumberChangeListener() {
+                @Override
+                public void numberChange(int value) {
+                    GoodsBean goodsBean = datas.get(getLayoutPosition());
+                    goodsBean.setNumber(value);
+
+                    //点击勾选按键时重新刷新价格
+                    showTotalPrice();
+
+                    //保存
+                    CartStorage.getInstance(MyApplication.getContext()).updateData(goodsBean);
                 }
             });
         }
