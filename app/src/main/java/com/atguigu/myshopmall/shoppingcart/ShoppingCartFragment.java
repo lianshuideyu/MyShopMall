@@ -113,7 +113,7 @@ public class ShoppingCartFragment extends BaseFragment {
             //有数据-隐藏
             llEmptyShopcart.setVisibility(View.GONE);
             //设置适配器
-            adapter = new ShoppingCartAdapter(mContext,datas);
+            adapter = new ShoppingCartAdapter(mContext,datas,checkboxAll,tvShopcartTotal,checkbox_delete_all);
 
             recyclerview.setAdapter(adapter);
             //设置布局管理
