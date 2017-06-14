@@ -1,5 +1,6 @@
 package com.atguigu.myshopmall.home.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.atguigu.myshopmall.MainActivity;
 import com.atguigu.myshopmall.R;
 import com.atguigu.myshopmall.app.MyApplication;
 import com.atguigu.myshopmall.home.adapter.HomeAdapter;
@@ -131,7 +133,10 @@ public class GoodsInfoActivity extends AppCompatActivity {
                 Toast.makeText(this, "收藏", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.tv_good_info_cart:
-                Toast.makeText(this, "进入购物车", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "进入购物车", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MyApplication.getContext(),MainActivity.class);
+                intent.putExtra("checkId",R.id.rb_cart);
+                startActivity(intent);
 
                 break;
             case R.id.btn_good_info_addcart:
