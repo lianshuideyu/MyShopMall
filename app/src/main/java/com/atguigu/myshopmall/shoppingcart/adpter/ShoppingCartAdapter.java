@@ -2,6 +2,7 @@ package com.atguigu.myshopmall.shoppingcart.adpter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -9,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.atguigu.myshopmall.R;
+import com.atguigu.myshopmall.app.MyApplication;
 import com.atguigu.myshopmall.home.bean.GoodsBean;
+import com.atguigu.myshopmall.shoppingcart.utils.CartStorage;
 import com.atguigu.myshopmall.util.Constants;
 import com.bumptech.glide.Glide;
 
@@ -95,22 +98,28 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
     }
 
     /**
-     * 设置是否选择
-     *
-     * @param checked
+     * 删除购物车数据
      */
-    public void checkAll_none(boolean checked) {
-        if (datas != null && datas.size() > 0) {
-
-            for (int i = 0; i < datas.size(); i++) {
+    public void deleteData() {
+        if(datas != null && datas.size() > 0) {
+            Log.e("TAG","deleteData--datas.size()==" + datas.size());
+            for(int i = 0; i < datas.size(); i++) {
                 GoodsBean goodsBean = datas.get(i);
-                goodsBean.setChecked(checked);
-                notifyItemChanged(i);
+                if(goodsBean.isChecked()) {
+                    datas.remove(goodsBean);
+                    Log.e("TAG","datas.size()==" + datas.size());
+                    notifyItemRemoved(i);
+
+                    CartStorage.getInstance(MyApplication.getContext()).deleteData(goodsBean);
+                    i--;
+                }
+
             }
-        }else {
-            checkboxAll.setChecked(false);
+
         }
+
     }
+
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.cb_gov)
@@ -148,10 +157,30 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         }
     }
 
+
+
+    /**
+     * 设置是否选择
+     *
+     * @param checked
+     */
+    public void checkAll_none(boolean checked) {
+        if (datas != null && datas.size() > 0) {
+
+            for (int i = 0; i < datas.size(); i++) {
+                GoodsBean goodsBean = datas.get(i);
+                goodsBean.setChecked(checked);
+                notifyItemChanged(i);
+            }
+        }else {
+            checkboxAll.setChecked(false);
+        }
+    }
+
     /**
      * 判断是否全部选中
      */
-    private void checkAll() {
+    public void checkAll() {
         if (datas != null && datas.size() > 0) {
             //有数据
             int number = 0;
