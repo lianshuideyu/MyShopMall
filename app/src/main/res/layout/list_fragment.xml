@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ListView
+        android:scrollbars="none"
+        android:id="@+id/listview"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="#F2F2F2"
+        app:layout_widthPercent="25%">
+
+
+    </ListView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/listview"
+        app:layout_widthPercent="75%">
+
+
+    </android.support.v7.widget.RecyclerView>
+</android.support.percent.PercentRelativeLayout>
