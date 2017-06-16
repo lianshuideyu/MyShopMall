@@ -1,5 +1,6 @@
 package com.atguigu.myshopmall.shoppingcart;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.atguigu.myshopmall.MainActivity;
 import com.atguigu.myshopmall.R;
 import com.atguigu.myshopmall.app.MyApplication;
 import com.atguigu.myshopmall.base.BaseFragment;
@@ -132,7 +134,10 @@ public class ShoppingCartFragment extends BaseFragment {
                 Toast.makeText(mContext, "收藏", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.tv_empty_cart_tobuy:
-                Toast.makeText(mContext, "去逛逛", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, "去逛逛", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MyApplication.getContext(),MainActivity.class);
+                intent.putExtra("checkId",R.id.rb_home);
+                startActivity(intent);
                 break;
         }
     }
