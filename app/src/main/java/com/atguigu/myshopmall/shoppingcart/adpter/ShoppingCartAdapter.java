@@ -91,6 +91,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         //设置库存
         holder.addSubView.setMaxValue(20);
 
+
     }
 
     @Override
