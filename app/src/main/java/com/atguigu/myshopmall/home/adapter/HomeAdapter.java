@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atguigu.myshopmall.R;
-import com.atguigu.myshopmall.home.activity.GoodsInfoActivity;
+import com.atguigu.myshopmall.app.GoodsInfoActivity;
 import com.atguigu.myshopmall.home.activity.WebViewActivity;
 import com.atguigu.myshopmall.home.bean.GoodsBean;
 import com.atguigu.myshopmall.home.bean.HomeBean;

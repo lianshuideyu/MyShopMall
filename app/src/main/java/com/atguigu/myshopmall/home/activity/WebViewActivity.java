@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.atguigu.myshopmall.R;
+import com.atguigu.myshopmall.app.GoodsInfoActivity;
 import com.atguigu.myshopmall.home.adapter.HomeAdapter;
 import com.atguigu.myshopmall.home.bean.GoodsBean;
 import com.atguigu.myshopmall.home.bean.H5Bean;

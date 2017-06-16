@@ -1,4 +1,4 @@
-package com.atguigu.myshopmall.home.activity;
+package com.atguigu.myshopmall.app;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import com.atguigu.myshopmall.MainActivity;
 import com.atguigu.myshopmall.R;
-import com.atguigu.myshopmall.app.MyApplication;
 import com.atguigu.myshopmall.home.adapter.HomeAdapter;
 import com.atguigu.myshopmall.home.bean.GoodsBean;
 import com.atguigu.myshopmall.shoppingcart.utils.AddSubView;
@@ -135,7 +134,9 @@ public class GoodsInfoActivity extends AppCompatActivity {
                 Toast.makeText(this, "更多", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.tv_good_info_callcenter:
-                Toast.makeText(this, "呼叫中心", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "呼叫中心", Toast.LENGTH_SHORT).show();
+                Intent intent2 = new Intent(this, CallCenterActivity.class);
+                startActivity(intent2);
                 break;
             case R.id.tv_good_info_collection:
                 Toast.makeText(this, "收藏", Toast.LENGTH_SHORT).show();

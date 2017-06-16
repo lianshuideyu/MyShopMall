@@ -20,10 +20,11 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTask"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask" />
         <activity android:name=".home.activity.WebViewActivity" />
-        <activity android:name=".home.activity.GoodsInfoActivity"></activity>
+        <activity android:name=".app.GoodsInfoActivity" />
+        <activity android:name=".app.CallCenterActivity"></activity>
     </application>
 
 </manifest>
