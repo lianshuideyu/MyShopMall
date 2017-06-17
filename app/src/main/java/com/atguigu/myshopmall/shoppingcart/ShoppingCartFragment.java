@@ -18,6 +18,7 @@ import com.atguigu.myshopmall.app.MyApplication;
 import com.atguigu.myshopmall.base.BaseFragment;
 import com.atguigu.myshopmall.home.bean.GoodsBean;
 import com.atguigu.myshopmall.shoppingcart.adpter.ShoppingCartAdapter;
+import com.atguigu.myshopmall.shoppingcart.pay.PayDemo;
 import com.atguigu.myshopmall.shoppingcart.utils.CartStorage;
 
 import java.util.ArrayList;
@@ -68,12 +69,15 @@ public class ShoppingCartFragment extends BaseFragment {
     //完成状态
     private static final int ACTION_COMPLETE = 2;
 
+    private PayDemo payDemo;
     @Override
     public View initView() {
         View view = View.inflate(mContext, R.layout.fragment_shopping_cart, null);
 
         Log.e("TAG", "ShoppingCartFragment--initView");
         ButterKnife.inject(this, view);
+
+        payDemo = new PayDemo(mContext);
 
         //初始先设置编辑状态的tag
         tvShopcartEdit.setTag(ACTION_EDIT);
@@ -112,7 +116,9 @@ public class ShoppingCartFragment extends BaseFragment {
                 adapter.showTotalPrice();
                 break;
             case R.id.btn_check_out:
-                Toast.makeText(mContext, "结算", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "去结算", Toast.LENGTH_SHORT).show();
+
+                payDemo.pay(adapter.getTotalPrice());
                 break;
             case R.id.checkbox_delete_all:
                 //Toast.makeText(mContext, "删除的全选/反选", Toast.LENGTH_SHORT).show();

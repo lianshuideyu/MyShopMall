@@ -53,7 +53,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         tvShopcartTotal.setText("合计：" + getTotalPrice());
     }
 
-    private double getTotalPrice() {
+    public double getTotalPrice() {
         double result = 0;
         if (datas != null && datas.size() > 0) {
             for (int i = 0; i < datas.size(); i++) {
