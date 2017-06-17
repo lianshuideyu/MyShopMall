@@ -1,5 +1,6 @@
 package com.atguigu.myshopmall.community;
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 
 import com.atguigu.myshopmall.R;
 import com.atguigu.myshopmall.base.BaseFragment;
+import com.atguigu.myshopmall.community.adapter.CommunityViewPagerAdapter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -24,6 +26,9 @@ public class CommunityFragment extends BaseFragment {
     ImageButton ibCommunityMessage;
     @InjectView(R.id.view_pager)
     ViewPager viewPager;
+    @InjectView(R.id.tablayout)
+    TabLayout tablayout;
+    private CommunityViewPagerAdapter adapter;
 
     @Override
     public View initView() {
@@ -39,6 +44,11 @@ public class CommunityFragment extends BaseFragment {
     public void initData() {
 
         super.initData();
+
+        adapter = new CommunityViewPagerAdapter(getFragmentManager());
+        viewPager.setAdapter(adapter);
+
+        tablayout.setupWithViewPager(viewPager);
     }
 
 
@@ -59,4 +69,5 @@ public class CommunityFragment extends BaseFragment {
                 break;
         }
     }
+
 }
