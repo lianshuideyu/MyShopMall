@@ -13,7 +13,12 @@ import com.atguigu.myshopmall.R;
 import com.atguigu.myshopmall.community.bean.NewPostBean;
 import com.atguigu.myshopmall.util.Constants;
 import com.bumptech.glide.Glide;
+import com.opendanmaku.DanmakuItem;
+import com.opendanmaku.DanmakuView;
+import com.opendanmaku.IDanmakuItem;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -52,12 +57,12 @@ public class NewPostListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         ViewHolder viewHolder;
-        if(convertView == null) {
+        if (convertView == null) {
 
             convertView = View.inflate(mContext, R.layout.item_listview_newpost, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
-        }else {
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
@@ -77,6 +82,31 @@ public class NewPostListViewAdapter extends BaseAdapter {
 
         viewHolder.tvCommunitySaying.setText(resultBean.getSaying());
         viewHolder.tvCommunityLikes.setText(resultBean.getLikes());
+
+        //设置弹幕
+        List<String> comment_list = resultBean.getComment_list();
+        if (comment_list != null && comment_list.size() > 0) {
+
+            List<IDanmakuItem> list = new ArrayList<>();
+            for (int i = 0; i < comment_list.size(); i++) {
+
+                list.add(new DanmakuItem(mContext, comment_list.get(i), viewHolder.danmakuView.getWidth()));
+            }
+
+            //随机
+            Collections.shuffle(list);
+
+            viewHolder.danmakuView.addItem(list, true);
+
+            viewHolder.danmakuView.show();
+        }else {
+
+            //hide and pause playing:
+
+            viewHolder.danmakuView.hide();
+            viewHolder.danmakuView.setVisibility(View.GONE);
+        }
+
         return convertView;
     }
 
@@ -98,8 +128,13 @@ public class NewPostListViewAdapter extends BaseAdapter {
         @InjectView(R.id.tv_community_comments)
         TextView tvCommunityComments;
 
+        private DanmakuView danmakuView;
+
         ViewHolder(View view) {
             ButterKnife.inject(this, view);
+
+            danmakuView = (DanmakuView) view.findViewById(R.id.danmakuView);
+
         }
     }
 }

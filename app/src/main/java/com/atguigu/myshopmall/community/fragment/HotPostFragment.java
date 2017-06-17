@@ -1,9 +1,8 @@
 package com.atguigu.myshopmall.community.fragment;
 
-import android.view.Gravity;
 import android.view.View;
-import android.widget.TextView;
 
+import com.atguigu.myshopmall.R;
 import com.atguigu.myshopmall.base.BaseFragment;
 
 /**
@@ -11,19 +10,19 @@ import com.atguigu.myshopmall.base.BaseFragment;
  */
 
 public class HotPostFragment extends BaseFragment {
-    private TextView textView;
 
     @Override
     public View initView() {
-        textView = new TextView(mContext);
-        textView.setGravity(Gravity.CENTER);
-        textView.setTextSize(23);
-        return textView;
+
+        View view = View.inflate(mContext, R.layout.fragment_hot_post, null);
+
+        return view;
     }
 
     @Override
     public void initData() {
-        textView.setText("热帖内容");
+
+
     }
 
 }
