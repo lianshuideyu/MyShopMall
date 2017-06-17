@@ -1,5 +1,6 @@
 package com.atguigu.myshopmall.type;
 
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -10,10 +11,13 @@ import com.alibaba.fastjson.JSON;
 import com.atguigu.myshopmall.R;
 import com.atguigu.myshopmall.base.BaseFragment;
 import com.atguigu.myshopmall.type.adapter.TypeLeftAdapter;
+import com.atguigu.myshopmall.type.adapter.TypeRightAdapter;
 import com.atguigu.myshopmall.type.bean.ListBean;
 import com.atguigu.myshopmall.util.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -33,6 +37,7 @@ public class ListFragment extends BaseFragment {
     private String[] urls = new String[]{Constants.SKIRT_URL, Constants.JACKET_URL, Constants.PANTS_URL, Constants.OVERCOAT_URL,
             Constants.ACCESSORY_URL, Constants.BAG_URL, Constants.DRESS_UP_URL, Constants.HOME_PRODUCTS_URL, Constants.STATIONERY_URL,
             Constants.DIGIT_URL, Constants.GAME_URL};
+    private TypeRightAdapter rightAdapter;
 
     @Override
     public View initView() {
@@ -106,6 +111,29 @@ public class ListFragment extends BaseFragment {
     private void processData(String json) {
         ListBean listBean = JSON.parseObject(json, ListBean.class);
         Log.e("TAG","解析成功==" + listBean.getResult().get(0).getName());
+        //Log.e("TAG","解析成功==" + listBean.getResult().size());
+
+        List<ListBean.ResultBean> result = listBean.getResult();
+        if(result != null && result.size() > 0) {
+
+            rightAdapter = new TypeRightAdapter(mContext,result);
+            rv.setAdapter(rightAdapter);
+
+            GridLayoutManager manager = new GridLayoutManager(mContext,3);
+
+            manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    if(position == 0) {
+                        return 3;
+                    }else {
+                        return 1;
+                    }
+                }
+            });
+
+            rv.setLayoutManager(manager);
+        }
 
     }
 }
