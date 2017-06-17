@@ -85,21 +85,19 @@ public class UserFragemnt extends BaseFragment implements GradationScrollView.Sc
         super.initData();
 
         initListeners();
-        tvUsercenter.setBackgroundColor(Color.argb((int) 255, 255,0,0));
     }
 
     /**
      * 获取顶部图片高度后，设置滚动监听
      */
     private void initListeners() {
-        tvUsercenter.setBackgroundColor(Color.argb((int) 0, 255,0,0));
+        tvUsercenter.setBackgroundColor(Color.argb((int) 0, 255, 0, 0));
 
         ViewTreeObserver vto = rlHeader.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                tvUsercenter.getViewTreeObserver().removeGlobalOnLayoutListener(
-                        this);
+                tvUsercenter.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 height = rlHeader.getHeight();
 
                 scrollview.setScrollViewListener(UserFragemnt.this);
@@ -109,6 +107,7 @@ public class UserFragemnt extends BaseFragment implements GradationScrollView.Sc
 
     /**
      * 滑动监听
+     *
      * @param scrollView
      * @param x
      * @param y
@@ -118,21 +117,22 @@ public class UserFragemnt extends BaseFragment implements GradationScrollView.Sc
     @Override
     public void onScrollChanged(GradationScrollView scrollView, int x, int y, int oldx, int oldy) {
         // TODO Auto-generated method stub
-        if (y <= 0) {   //设置标题的背景颜色
-            tvUsercenter.setBackgroundColor(Color.argb((int) 0, 255,0,0));
+        if (y <= 0) {   //设置标题的背景颜色---透明
+            tvUsercenter.setBackgroundColor(Color.argb((int) 0, 255, 0, 0));
 
         } else if (y > 0 && y <= height) { //滑动距离小于banner图的高度时，设置背景和字体颜色颜色透明度渐变
-            float scale = (float) y / height;
-            float alpha = (255 * scale);
             //滑动距离 ： 总距离 = 改变的透明度 ： 总透明度
             //改变的透明度 = (滑动距离 ：总距离) *总透明度
+            float scale = (float) y / height;
+            float alpha = (255 * scale);
 
-            tvUsercenter.setTextColor(Color.argb((int) alpha, 255,255,255));
 
-            tvUsercenter.setBackgroundColor(Color.argb((int) alpha, 255,0,0));//alpha,144,151,166
+            tvUsercenter.setTextColor(Color.argb((int) alpha, 255, 255, 255));
+
+            tvUsercenter.setBackgroundColor(Color.argb((int) alpha, 255, 0, 0));//alpha,144,151,166
 
         } else {    //滑动到banner下面设置普通颜色
-            tvUsercenter.setBackgroundColor(Color.argb((int) 255, 255,0,0));//255, 255,151,166
+            tvUsercenter.setBackgroundColor(Color.argb((int) 255, 255, 0, 0));//255, 255,151,166
         }
     }
 
@@ -147,6 +147,5 @@ public class UserFragemnt extends BaseFragment implements GradationScrollView.Sc
     public void onViewClicked() {
         Toast.makeText(mContext, "登录", Toast.LENGTH_SHORT).show();
     }
-
 
 }
