@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/AddSubView/AddSubView.iml" filepath="$PROJECT_DIR$/AddSubView/AddSubView.iml" />
       <module fileurl="file://$PROJECT_DIR$/MyShopMall.iml" filepath="$PROJECT_DIR$/MyShopMall.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gradationscroll_library/gradationscroll_library.iml" filepath="$PROJECT_DIR$/gradationscroll_library/gradationscroll_library.iml" />
     </modules>
   </component>
 </project>
