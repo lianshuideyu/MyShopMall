@@ -1,31 +1,62 @@
 package com.atguigu.myshopmall.community;
 
-import android.graphics.Color;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.atguigu.myshopmall.R;
 import com.atguigu.myshopmall.base.BaseFragment;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2017/6/11.
  */
 
 public class CommunityFragment extends BaseFragment {
-    private TextView tv;
+    @InjectView(R.id.ib_community_icon)
+    ImageButton ibCommunityIcon;
+    @InjectView(R.id.ib_community_message)
+    ImageButton ibCommunityMessage;
+    @InjectView(R.id.view_pager)
+    ViewPager viewPager;
+
     @Override
     public View initView() {
-        tv = new TextView(mContext);
-        tv.setTextColor(Color.RED);
-        tv.setTextSize(30);
-        Log.e("TAG","CommunityFragment--initView");
-        return tv;
+        Log.e("TAG", "CommunityFragment--initView");
+
+        View view = View.inflate(mContext, R.layout.fragment_community, null);
+        ButterKnife.inject(this, view);
+
+        return view;
     }
 
     @Override
     public void initData() {
-        tv.setText("发现");
 
         super.initData();
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
+    }
+
+    @OnClick({R.id.ib_community_icon, R.id.ib_community_message})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.ib_community_icon:
+                Toast.makeText(mContext, "icon", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.ib_community_message:
+                Toast.makeText(mContext, "消息", Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 }
