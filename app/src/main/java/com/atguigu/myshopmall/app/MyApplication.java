@@ -2,6 +2,7 @@ package com.atguigu.myshopmall.app;
 
 import android.app.Application;
 
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -21,6 +22,9 @@ public class MyApplication extends Application {
 
         instance = this;
         initOkhttp();
+
+        //扫一扫功能
+        ZXingLibrary.initDisplayOpinion(this);
     }
 
     /**

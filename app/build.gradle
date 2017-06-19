@@ -42,4 +42,5 @@ dependencies {
     compile 'com.linsea:opendanmaku:1.0.0@aar'
     compile project(':gradationscroll_library')
     compile files('libs/alipaySdk-20160809.jar')
+    compile 'cn.yipianfengye.android:zxing-library:2.1'
 }

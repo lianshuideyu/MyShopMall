@@ -1,5 +1,7 @@
 package com.atguigu.myshopmall.home.fragment;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +16,8 @@ import com.atguigu.myshopmall.base.BaseFragment;
 import com.atguigu.myshopmall.home.adapter.HomeAdapter;
 import com.atguigu.myshopmall.home.bean.HomeBean;
 import com.atguigu.myshopmall.util.Constants;
+import com.uuzuche.lib_zxing.activity.CaptureActivity;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -28,6 +32,7 @@ import okhttp3.Call;
 
 public class HomeFragment extends BaseFragment {
     private static final String TAG = HomeFragment.class.getSimpleName();//"HomeFragment"
+    public static final int REQUEST_CODE = 1;
     @InjectView(R.id.tv_scan_home)
     TextView tvScanHome;
     @InjectView(R.id.tv_search_home)
@@ -42,6 +47,7 @@ public class HomeFragment extends BaseFragment {
     private String homeUrl;
 
     private HomeAdapter adapter;
+
     @Override
     public View initView() {
         Log.e("TAG", "HomeFragment--initView");
@@ -70,12 +76,12 @@ public class HomeFragment extends BaseFragment {
 
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        Log.e("TAG","联网失败");
+                        Log.e("TAG", "联网失败");
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e("TAG","联网成功==" + response);
+                        Log.e("TAG", "联网成功==" + response);
                         //解析数据
                         processData(response);
 
@@ -89,17 +95,17 @@ public class HomeFragment extends BaseFragment {
 
         Log.e(TAG, "解析成功==" + homeBean.getResult().getAct_info().get(0).getName());
 
-        adapter = new HomeAdapter(mContext,homeBean.getResult());
+        adapter = new HomeAdapter(mContext, homeBean.getResult());
 
-        GridLayoutManager manager = new GridLayoutManager(mContext,1);
+        GridLayoutManager manager = new GridLayoutManager(mContext, 1);
         rvHome.setLayoutManager(manager);
 
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                if(position <= 3) {
+                if (position <= 3) {
                     ibTop.setVisibility(View.GONE);
-                }else {
+                } else {
                     ibTop.setVisibility(View.VISIBLE);
                 }
 
@@ -118,9 +124,12 @@ public class HomeFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.tv_scan_home:
                 Toast.makeText(mContext, "扫一扫", Toast.LENGTH_SHORT).show();
+                saoYiSao();
                 break;
             case R.id.tv_search_home:
                 Toast.makeText(mContext, "搜索", Toast.LENGTH_SHORT).show();
+
+
                 break;
             case R.id.tv_message_home:
                 Toast.makeText(mContext, "消息", Toast.LENGTH_SHORT).show();
@@ -129,6 +138,35 @@ public class HomeFragment extends BaseFragment {
                 //Toast.makeText(mContext, "回到顶部", Toast.LENGTH_SHORT).show();
                 rvHome.scrollToPosition(0);
                 break;
+        }
+    }
+
+    private void saoYiSao() {
+        Intent intent = new Intent(mContext, CaptureActivity.class);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        /**
+         * 处理二维码扫描结果
+         */
+        if (requestCode == REQUEST_CODE) {
+            //处理扫描结果（在界面上显示）
+            if (null != data) {
+                Bundle bundle = data.getExtras();
+                if (bundle == null) {
+                    return;
+                }
+                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                    String result = bundle.getString(CodeUtils.RESULT_STRING);
+                    Toast.makeText(mContext, "解析结果:" + result, Toast.LENGTH_LONG).show();
+                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                    Toast.makeText(mContext, "解析二维码失败", Toast.LENGTH_LONG).show();
+                }
+            }
         }
     }
 
