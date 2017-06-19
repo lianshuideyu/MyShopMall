@@ -248,7 +248,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                     HomeBean.ResultBean.ChannelInfoBean channelInfoBean = channel_info.get(position);
-                    Toast.makeText(mContext, "" + channelInfoBean.getChannel_name(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(mContext, "" + channelInfoBean.getChannel_name(), Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(mContext, GoodsListActivity.class);
                     intent.putExtra("position", position);//位置传过去
