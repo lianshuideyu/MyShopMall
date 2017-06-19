@@ -27,7 +27,7 @@
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/ib_drawer_layout_confirm"
+        android:id="@+id/tv_drawer_layout_confirm"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_margin="5dp"
