@@ -1,5 +1,6 @@
 package com.atguigu.myshopmall.user;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
@@ -8,10 +9,10 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.atguigu.myshopmall.R;
 import com.atguigu.myshopmall.base.BaseFragment;
+import com.atguigu.myshopmall.user.activity.LoginActivity;
 import com.hankkin.gradationscroll.GradationScrollView;
 
 import butterknife.ButterKnife;
@@ -145,7 +146,9 @@ public class UserFragemnt extends BaseFragment implements GradationScrollView.Sc
 
     @OnClick(R.id.tv_username)
     public void onViewClicked() {
-        Toast.makeText(mContext, "登录", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mContext, "登录", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(mContext, LoginActivity.class);
+        startActivity(intent);
     }
 
 }

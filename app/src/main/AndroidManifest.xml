@@ -28,16 +28,17 @@
             android:launchMode="singleTask" />
         <activity android:name=".home.activity.WebViewActivity" />
         <activity android:name=".app.GoodsInfoActivity" />
-        <activity android:name=".app.CallCenterActivity"></activity>
+        <activity android:name=".app.CallCenterActivity" />
 
-        <!-- alipay sdk begin 当手机没有装支付宝的时候会调用网页支付-->
+        <!-- alipay sdk begin 当手机没有装支付宝的时候会调用网页支付 -->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity android:name=".user.activity.LoginActivity" />
+        <activity android:name=".home.activity.GoodsListActivity"></activity>
     </application>
 
 </manifest>
