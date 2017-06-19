@@ -2,8 +2,11 @@ package com.atguigu.myshopmall.app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,6 +23,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.atguigu.myshopmall.MainActivity;
 import com.atguigu.myshopmall.R;
 import com.atguigu.myshopmall.home.adapter.HomeAdapter;
@@ -27,8 +31,10 @@ import com.atguigu.myshopmall.home.bean.GoodsBean;
 import com.atguigu.myshopmall.shoppingcart.utils.AddSubView;
 import com.atguigu.myshopmall.shoppingcart.utils.CartStorage;
 import com.atguigu.myshopmall.util.Constants;
+import com.atguigu.myshopmall.util.DensityUtil;
 import com.atguigu.myshopmall.util.VirtualkeyboardHeight;
 import com.bumptech.glide.Glide;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -76,11 +82,15 @@ public class GoodsInfoActivity extends AppCompatActivity {
     LinearLayout llRoot;
 
     private GoodsBean goodsBean;
+
+    private ImageView erweima;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goods_info);
         ButterKnife.inject(this);
+
+        erweima = (ImageView) findViewById(R.id.erweima);
 
         getData();
 
@@ -103,6 +113,7 @@ public class GoodsInfoActivity extends AppCompatActivity {
 
         //设置图片
         Glide.with(this).load(Constants.BASE_URL_IMAGE + figure).into(ivGoodInfoImage);
+
         tvGoodInfoName.setText(name);
         tvGoodInfoPrice.setText("￥" + coverPrice);
 
@@ -131,7 +142,13 @@ public class GoodsInfoActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.ib_good_info_more:
-                Toast.makeText(this, "更多", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "更多", Toast.LENGTH_SHORT).show();
+                if (llRoot.isShown()) {
+                    llRoot.setVisibility(View.GONE);
+                } else {
+                    llRoot.setVisibility(View.VISIBLE);
+                }
+
                 break;
             case R.id.tv_good_info_callcenter:
 //                Toast.makeText(this, "呼叫中心", Toast.LENGTH_SHORT).show();
@@ -157,7 +174,9 @@ public class GoodsInfoActivity extends AppCompatActivity {
 
                 break;
             case R.id.tv_more_share:
-                Toast.makeText(this, "分享", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "分享生成二维码", Toast.LENGTH_SHORT).show();
+                createErWeiMa();
+
                 break;
             case R.id.tv_more_search:
                 Toast.makeText(this, "搜索", Toast.LENGTH_SHORT).show();
@@ -166,6 +185,23 @@ public class GoodsInfoActivity extends AppCompatActivity {
                 Toast.makeText(this, "主页", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    /**
+     * 生成二维码
+     */
+    private void createErWeiMa() {
+        String goodbeanjson = JSON.toJSONString(goodsBean);
+        //String textContent = editText.getText().toString();
+        if (TextUtils.isEmpty(goodbeanjson)) {
+            Toast.makeText(this, "您的内容为空!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //editText.setText("");
+        Bitmap mBitmap = CodeUtils.createImage(goodbeanjson, DensityUtil.dip2px(this, 200),
+                DensityUtil.dip2px(this, 200), BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+        erweima.setImageBitmap(mBitmap);
+
     }
 
 

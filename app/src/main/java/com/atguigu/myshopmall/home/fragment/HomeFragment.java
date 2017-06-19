@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -12,8 +13,10 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.atguigu.myshopmall.R;
+import com.atguigu.myshopmall.app.GoodsInfoActivity;
 import com.atguigu.myshopmall.base.BaseFragment;
 import com.atguigu.myshopmall.home.adapter.HomeAdapter;
+import com.atguigu.myshopmall.home.bean.GoodsBean;
 import com.atguigu.myshopmall.home.bean.HomeBean;
 import com.atguigu.myshopmall.util.Constants;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
@@ -25,6 +28,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import okhttp3.Call;
+
+import static com.atguigu.myshopmall.home.adapter.HomeAdapter.GOODS_BEAN;
 
 /**
  * Created by Administrator on 2017/6/11.
@@ -162,7 +167,16 @@ public class HomeFragment extends BaseFragment {
                 }
                 if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                     String result = bundle.getString(CodeUtils.RESULT_STRING);
-                    Toast.makeText(mContext, "解析结果:" + result, Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "扫码成功", Toast.LENGTH_LONG).show();
+                    if (!TextUtils.isEmpty(result)) {
+                        GoodsBean goodsBean = JSON.parseObject(result, GoodsBean.class);
+
+                        Intent intent = new Intent(mContext, GoodsInfoActivity.class);
+                        intent.putExtra(GOODS_BEAN, goodsBean);
+                        mContext.startActivity(intent);
+
+                    }
+
                 } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                     Toast.makeText(mContext, "解析二维码失败", Toast.LENGTH_LONG).show();
                 }
