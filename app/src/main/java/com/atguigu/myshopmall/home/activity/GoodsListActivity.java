@@ -3,6 +3,7 @@ package com.atguigu.myshopmall.home.activity;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -14,10 +15,13 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.atguigu.myshopmall.R;
+import com.atguigu.myshopmall.home.adapter.GoodsListAdapter;
 import com.atguigu.myshopmall.home.bean.TypeListBean;
 import com.atguigu.myshopmall.util.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -65,6 +69,9 @@ public class GoodsListActivity extends AppCompatActivity {
             Constants.SHOUSHI_STORE,
     };
 
+    private GoodsListAdapter adapter;
+    private List<TypeListBean.ResultBean.PageDataBean> page_data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +112,14 @@ public class GoodsListActivity extends AppCompatActivity {
 
         TypeListBean typeListBean = JSON.parseObject(json, TypeListBean.class);
         Log.e("TAg", "GoodsListActivity解析成功=" + typeListBean.getResult().getPage_data().get(0).getName());
+
+        page_data = typeListBean.getResult().getPage_data();
+
+        adapter = new GoodsListAdapter(this, page_data);
+        recyclerview.setAdapter(adapter);
+
+        GridLayoutManager parame = new GridLayoutManager(this, 2);
+        recyclerview.setLayoutManager(parame);
     }
 
 
@@ -128,4 +143,6 @@ public class GoodsListActivity extends AppCompatActivity {
                 break;
         }
     }
+
+
 }
