@@ -69,6 +69,33 @@ public class GoodsListAdapter extends RecyclerView.Adapter<GoodsListAdapter.MyVi
         public MyViewHolder(View itemView) {
             super(itemView);
             ButterKnife.inject(this, itemView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (onItemClickListener != null) {
+                        onItemClickListener.setOnItemClickListener(page_data.get(getLayoutPosition()));
+                    }
+
+                }
+            });
         }
     }
+
+    private OnItemClickListener onItemClickListener;
+
+    /**
+     * 设置item的点击事件的监听
+     */
+    public interface OnItemClickListener {
+        void setOnItemClickListener(TypeListBean.ResultBean.PageDataBean data);
+    }
+
+    /**
+     * 设置监听
+     */
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
 }

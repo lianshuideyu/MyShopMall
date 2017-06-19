@@ -1,5 +1,6 @@
 package com.atguigu.myshopmall.home.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +16,10 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.atguigu.myshopmall.R;
+import com.atguigu.myshopmall.app.GoodsInfoActivity;
 import com.atguigu.myshopmall.home.adapter.GoodsListAdapter;
+import com.atguigu.myshopmall.home.adapter.HomeAdapter;
+import com.atguigu.myshopmall.home.bean.GoodsBean;
 import com.atguigu.myshopmall.home.bean.TypeListBean;
 import com.atguigu.myshopmall.util.Constants;
 import com.atguigu.myshopmall.util.DensityUtil;
@@ -127,6 +131,29 @@ public class GoodsListActivity extends AppCompatActivity {
         recyclerview.addItemDecoration(new SpaceItemDecoration(DensityUtil.dip2px(this, 10)));
 
         recyclerview.setAdapter(adapter);
+
+        //设置点击事件
+        adapter.setOnItemClickListener(new GoodsListAdapter.OnItemClickListener() {
+            @Override
+            public void setOnItemClickListener(TypeListBean.ResultBean.PageDataBean data) {
+                String name = data.getName();
+                String cover_price = data.getCover_price();
+                String figure = data.getFigure();
+                String product_id = data.getProduct_id();
+
+                GoodsBean goodsBean = new GoodsBean();
+                goodsBean.setName(name);
+                goodsBean.setFigure(figure);
+                goodsBean.setCover_price(cover_price);
+                goodsBean.setProduct_id(product_id);
+
+                Intent intent = new Intent(GoodsListActivity.this, GoodsInfoActivity.class);
+                intent.putExtra(HomeAdapter.GOODS_BEAN, goodsBean);
+                startActivity(intent);
+
+            }
+        });
+
     }
 
 
