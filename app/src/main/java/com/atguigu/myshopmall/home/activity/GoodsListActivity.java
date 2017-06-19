@@ -18,6 +18,8 @@ import com.atguigu.myshopmall.R;
 import com.atguigu.myshopmall.home.adapter.GoodsListAdapter;
 import com.atguigu.myshopmall.home.bean.TypeListBean;
 import com.atguigu.myshopmall.util.Constants;
+import com.atguigu.myshopmall.util.DensityUtil;
+import com.atguigu.myshopmall.util.SpaceItemDecoration;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -116,10 +118,15 @@ public class GoodsListActivity extends AppCompatActivity {
         page_data = typeListBean.getResult().getPage_data();
 
         adapter = new GoodsListAdapter(this, page_data);
-        recyclerview.setAdapter(adapter);
 
         GridLayoutManager parame = new GridLayoutManager(this, 2);
+
         recyclerview.setLayoutManager(parame);
+
+        //添加item的边界效果--分割线
+        recyclerview.addItemDecoration(new SpaceItemDecoration(DensityUtil.dip2px(this, 10)));
+
+        recyclerview.setAdapter(adapter);
     }
 
 

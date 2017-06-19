@@ -44,7 +44,7 @@ public class GoodsListAdapter extends RecyclerView.Adapter<GoodsListAdapter.MyVi
         TypeListBean.ResultBean.PageDataBean pageDataBean = page_data.get(position);
 
         holder.tvName.setText(pageDataBean.getName());
-        holder.tvPrice.setText(pageDataBean.getCover_price());
+        holder.tvPrice.setText("￥" + pageDataBean.getCover_price());
 
         Glide.with(context)
                 .load(Constants.BASE_URL_IMAGE + pageDataBean.getFigure())
