@@ -163,7 +163,8 @@ public class GoodsListActivity extends AppCompatActivity {
 
     private boolean isListPrice = false;
 
-    @OnClick({R.id.tv_goods_list_sort, R.id.ib_goods_list_back, R.id.tv_goods_list_search, R.id.ib_goods_list_home, R.id.tv_goods_list_price, R.id.tv_goods_list_select})
+    @OnClick({R.id.tv_goods_list_sort, R.id.ib_goods_list_back, R.id.tv_goods_list_search,
+            R.id.ib_goods_list_home, R.id.tv_goods_list_price, R.id.tv_goods_list_select})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ib_goods_list_back:
@@ -202,6 +203,10 @@ public class GoodsListActivity extends AppCompatActivity {
                 //价格文字变成默认黑色
                 tvGoodsListSort.setTextColor(Color.parseColor("#333538"));
                 tvGoodsListPrice.setTextColor(Color.parseColor("#333538"));
+
+                //筛选------------------------
+
+
                 break;
             case R.id.tv_goods_list_sort:
 //                Toast.makeText(GoodsListActivity.this, "综合排序", Toast.LENGTH_SHORT).show();
